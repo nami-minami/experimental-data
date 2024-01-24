@@ -1,0 +1,88 @@
+\documentclass{jlreq}
+\usepackage{amsmath,physics2,derivative}
+\usephysicsmodule{ab}
+\title{Gauss関数の最尤推定}
+\author{}
+
+\begin{document}
+	\maketitle
+	\section*{最尤推定}
+		最尤推定
+
+	\section*{Gauss関数の最尤推定}
+		正規分布の確率関数はGauss関数であり，以下である．
+			\begin{equation}
+				f(x;\mu,\sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}}
+				\exp\ab[{-\frac{(x-\mu)^2}{2\sigma^2}}] \label{eq:Gauss}
+			\end{equation}
+		個数\(N\)のデータ\(x=(x_0,x_1,x_2,\cdots,x_n)\)を用意すると尤度関数は以下と
+		なる．
+			\begin{equation}
+				L(x|\theta) = \sum_{n=0}^N \frac{1}{\sqrt{2\pi\sigma^2}}
+				\exp\ab[{-\frac{(x_n-\mu)^2}{2\sigma^2}}] \label{eq:likelihood}
+			\end{equation}
+		Gauss関数には2つのパラメーターが存在するため，2回に分けて
+		各々のパラメーターを決定する必要がある．
+		
+		\subsection*{パラメーター\(\mu\)についての最尤推定}
+			\eqref{eq:likelihood}式を\(\mu\)で偏微分するのだが，
+			それに先んじて簡単のため両辺に対数を取って式を変形する．
+				\begin{align}
+					\log_e L(x|\theta) &= \log_e \sum_{n=0}^N 
+						\frac{1}{\sqrt{2\pi\sigma^2}}
+						\exp\ab[{-\frac{(x_n-\mu)^2}{2\sigma^2}}]\\
+					&= \sum_{n=0}^N\log_e\frac{1}{\sqrt{2\pi\sigma^2}} +
+						\log_e e^{-\frac{(x_n-\mu)^2}{2\sigma^2}}\\
+					&= \sum_{n=0}^N -\frac{1}{2}\log_e(2\pi\sigma^2) -
+					\frac{(x_n-\mu)^2}{2\sigma^2}\\
+					&= -\frac{N}{2}\log_e(2\pi\sigma^2) -
+						\frac{1}{2\sigma^2}\sum_{n=0}^N(x_n-\mu)^2\label{eq:mu-trans}
+				\end{align}
+			\eqref{eq:mu-trans}式を\(\sigma\)で偏微分する．
+				\begin{equation}
+					\pdv{}{\sigma}L(x|\theta) =
+						-\frac{1}{\sigma}\sum_{n=0}^N(x_n-\mu)\label{eq:mu-dv}
+				\end{equation}
+			最後に\eqref{eq:mu-dv}式を0とし，\(\mu\)について解く．
+				\begin{align}
+					-\frac{1}{\sigma}\sum_{n=0}^N(x_n-\mu) &= 0\\
+					-N\mu + \sum_{n=0}^Nx_n &= 0\\
+					\mu &= \frac{1}{N}\sum_{n=0}^Nx_n \equiv \bar{x} \label{eq:fish}
+				\end{align}
+			\eqref{eq:fish}をみるとGauss関数のパラメーター\(\mu\)はデータ\(x\)の
+			平均に等しいことがわかる．
+			したがって\(\mu\)はデータの平均である．
+
+		\subsection*{パラメーター\(\sigma\)についての最尤推定}
+			\(\mu\)の場合と同様にして，\eqref{eq:mu-trans}式を\(\sigma\)で
+			偏微分する．対数に注意し，その引数を\(u\)とする．（合成関数の微分）
+				\begin{align}
+					\pdv{}{\sigma}\log_eL(x|\theta) &= 
+						-\frac{N}{2}\odv{}{u}\log_eu\odv{}{\sigma}2\pi\sigma^2 -
+						\pdv{}{\sigma}\frac{1}{2\sigma^2}\sum_{n=0}^N(x_n-\mu)^2\\
+					&= -\frac{N}{2}\cdot\frac{1}{u}\cdot4\pi\sigma +
+						\frac{1}{\sigma^3}\sum_{n=0}^N(x_n-\mu)^2\\
+					&= -\frac{N}{2}\cdot\frac{1}{2\pi\sigma^2}\cdot4\pi\sigma + 
+						\frac{1}{\sigma^3}\sum_{n=0}^N(x_n-\mu)^2\\
+					&= -\frac{N}{\sigma} + 
+						\frac{1}{\sigma^3}\sum_{n=0}^N(x_n-\mu)^2\\
+					&= \frac{1}{\sigma}\ab\{-N+\frac{1}{\sigma^2}
+						\sum_{n=0}^N(x_n-\mu)^2\}\label{eq:sigma-dv}
+				\end{align}
+			最後に\eqref{eq:sigma-dv}式を0とし，\(\sigma\)について解く．
+				\begin{align}
+					-\frac{1}{\sigma}\ab\{-N+
+						\frac{1}{\sigma^2}\sum_{n=0}^N(x_n-\mu)^2\} &= 0\\
+					-N+\frac{1}{\sigma^2}\sum_{n=0}^N(x_n-\mu)^2 &= 0\\
+					N\sigma^2 &= \sum_{n=0}^N(x_n-\mu)^2\\
+					\sigma^2 &= \frac{1}{N}\sum_{n=0}^N(x_n-\mu)^2　
+						\label{eq:sigma-fish}
+				\end{align}
+			\eqref{eq:sigma-fish}式を見るとこれは分散の定義そのものである．従ってガ
+			ウス関数のパラメーター\(\sigma\)はデータの分散である．
+
+			以上2回の最尤推定により，Gauss関数のパラメーターを解析的に決定すること
+			ができた．よって，適当なデータを用意し，
+			その平均と分散とを\eqref{eq:Gauss}式に代入することでヒストグラムを
+			Gauss関数で近似することができる．
+\end{document}
