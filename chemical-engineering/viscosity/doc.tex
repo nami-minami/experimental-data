@@ -1,0 +1,51 @@
+\documentclass{jlreq}
+\usepackage{amsmath, physics2, derivative, siunitx}
+\title{相対粘度関数の導出}
+\author{}
+
+\begin{document}
+	\maketitle
+	流体が一定の圧力\(p[\si{Pa.s}]\)を受けて内半径\(r[\si{m}]\),
+	長さ\(l[\si{m}]\)の毛管内を時間\(\theta[\si{s}]\)要して流れる際，
+	流体の体積\(V[m^3]\)には以下のHagen–Poiseuille式が成り立つ．
+		\begin{equation}
+			V = \frac{\pi p r^4 \theta}{8\mu l}
+		\end{equation}
+	これを\(\mu\)について解く．
+		\begin{equation}
+			\mu = \frac{\pi p r^4 \theta}{8Vl}
+		\end{equation}
+	2流体間の相対粘度即ち粘度比を求める．ここで，流体0には添字0，流体1には添字1を付与
+	する．
+		\begin{equation}
+			\frac{\mu_0}{\mu_1} = 
+			\frac{
+				\frac{\pi p_0 r_0^4 \theta_0}{8V_0l_0}
+			}
+			{
+				\frac{\pi p_1 r_1^4 \theta_1}{8V_1l_1}
+			}
+		\end{equation}
+	測定に際して，流体0および流体1には同一のOstwald粘度計を用い，体積を揃えたため，
+	\(V,r,l\)は同一である．
+		\begin{align}
+			\frac{\mu_0}{\mu_1}= \frac{p_0\theta_0}{p_1\theta_1}\label{eq:mu-mu}
+		\end{align}
+	ここで，圧力\(p\)は定義より以下のように変形できる．
+		\begin{equation}
+			p = \frac{F}{S} = \frac{mg}{S} = \frac{\rho V}{S}\label{eq:rho}
+		\end{equation}
+	上式で\(F[\si{N}]\)は流体に作用する力，\(S[\si{m^2}]\)は毛細管の断面積，
+	\(m[\si{kg}]\)は流体の質量，\(g[\si{m.s^{-2}}]\)は重力加速度，
+	\(\rho[\si{kg.m^{-3}}]\)は流体の密度である．\eqref{eq:rho}式を用いて
+	\eqref{eq:mu-mu}式を書き直す．
+		\begin{equation}
+			\frac{\mu_0}{\mu_1}= \frac{\frac{\rho_0 V}{S}\theta_0}
+			{\frac{\rho_1 V}{S}\theta_1}	
+		\end{equation}
+	断面積\(S\)は同一装置を用いたことによって内半径\(r\)が等しいため同一，重力加速度
+	\(g\)についても定数であるため同一である．
+	\begin{equation}
+		\frac{\mu_0}{\mu_1} = \frac{\rho_0\theta_0}{\rho_1\theta_1}
+	\end{equation}
+\end{document}
