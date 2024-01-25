@@ -1,13 +1,34 @@
 \documentclass{jlreq}
-\usepackage{amsmath,physics2,derivative}
+\usepackage{amsmath,physics2,derivative,bm}
 \usephysicsmodule{ab}
 \title{Gauss関数の最尤推定}
 \author{}
 
 \begin{document}
 	\maketitle
-	\section*{最尤推定}
-		最尤推定
+	\section{確率密度関数と最尤推定}
+		ある確率変数\(x\)がパラメーター\(\theta\)を持つ関数\(f(x;\theta)\)に従う時，
+		この関数を確率密度関数という．
+			\begin{equation}
+				x \sim P(x;\theta)
+			\end{equation}
+
+		ここで，互いに独立な\(N\)個の要素を持つ変数\(x=(x_0,x_1,x_2\cdots x_n)\)
+		を用意し，各々の値に関する確率密度関数の値の積を\(\theta\)の関数とするとき，
+		これは\(\theta\)の尤度と呼ぶ．これは\(\theta\)の尤もらしさを示す．
+			\begin{equation}
+				L(\theta) = \prod_n^N P(x_n;\theta)
+			\end{equation}
+		この尤度も最大にするようなパラメーター\(\theta\)の探索を最尤推定と呼ぶ．
+		具体的には，あるパラメーター不明の確率分布に従うデータを得た時，最もデータを
+		よく表すパラメーターを探索することである．
+
+		通常は簡単のため尤度を対数で表した対数尤度を用いる．
+			\begin{equation}
+				\log_eL(\theta)=\log_e\prod_n^NP(x_n;\theta)=
+				\sum_{n}^N\log_eP(x_n;\theta)
+			\end{equation}
+		
 
 	\section*{Gauss関数の最尤推定}
 		正規分布の確率関数はGauss関数であり，以下である．
@@ -24,7 +45,7 @@
 		Gauss関数には2つのパラメーターが存在するため，2回に分けて
 		各々のパラメーターを決定する必要がある．
 		
-		\subsection*{パラメーター\(\mu\)についての最尤推定}
+		\subsection{パラメーター\(\mu\)についての最尤推定}
 			\eqref{eq:likelihood}式を\(\mu\)で偏微分するのだが，
 			それに先んじて簡単のため両辺に対数を取って式を変形する．
 				\begin{align}
@@ -53,7 +74,7 @@
 			平均に等しいことがわかる．
 			したがって\(\mu\)はデータの平均である．
 
-		\subsection*{パラメーター\(\sigma\)についての最尤推定}
+		\subsection{パラメーター\(\sigma\)についての最尤推定}
 			\(\mu\)の場合と同様にして，\eqref{eq:mu-trans}式を\(\sigma\)で
 			偏微分する．対数に注意し，その引数を\(u\)とする．（合成関数の微分）
 				\begin{align}
@@ -85,4 +106,48 @@
 			ができた．よって，適当なデータを用意し，
 			その平均と分散とを\eqref{eq:Gauss}式に代入することでヒストグラムを
 			Gauss関数で近似することができる．
+
+
+		\section{勾配降下法}
+			前節ではGauss関数の最尤推定を行って解析的にパラメーターを導いたが，
+			関数によっては解析的にパラメーターを導くことが困難，あるいは不可能といっ
+			た場合が存在する．こうした場合においては数値解析的にパラメーターを求める
+			ことが可能である．
+			この分野では目的関数を最小化することを目的とする．この最小化
+			する目的関数を損失関数と呼ぶ．今回の場合においては，損失関数は対数尤尤度
+			関数と関係を持つ．
+				\begin{equation}
+					E(\theta) \equiv -\log_eL(\theta)
+				\end{equation}
+			こうした微分可能な関数の数値解析において最も簡単な方法は勾配降下法と呼ば
+			れるものである．これは次式のように，関数の勾配を利用して解を求める．
+				\begin{equation}
+					\theta_{t+1} = \theta_t - \gamma\nabla E(\theta_t)
+				\end{equation}
+
+			これをGauss関数に適用する．Gauss関数にはパラメーター\(\mu\)および
+			\(\sigma\)が存在した．これをまとめてよって\(\bm{\theta}\)とする．
+			勾配降下法のためには\(\bm{\theta}\)の初期値\(\bm{\theta_0}\)を与えねばな
+			らない．これで準備は済んだので勾配降下法を行っていく．まずは\(\theta_1\)
+			を求める．
+				\begin{align}
+					\bm{\theta_1} &= \bm{\theta_0} - \gamma\nabla E(\bm{\theta_0})\\
+					&= \bm{\theta_0}-\gamma
+						\begin{pmatrix}
+							\pdv{E}{\mu}\\
+							\pdv{E}{\sigma}
+						\end{pmatrix}
+				\end{align}
+			次に\(\theta_2\)を求めるのだが，計算は全く同じで添字が
+			変化するのみである．
+				\begin{align}
+					\bm{\theta_2} &= \bm{\theta_1} - \gamma\nabla E(\bm{\theta_1})\\
+					&= \bm{\theta_1}-\gamma
+						\begin{pmatrix}
+							\pdv{E}{\mu}\\
+							\pdv{E}{\sigma}
+						\end{pmatrix}
+				\end{align}
+			このように適当な値に収束するまで微分を繰り返していく．
+
 \end{document}
